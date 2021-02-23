@@ -1,0 +1,22 @@
+body {
+    margin: 0px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(253, 249, 196);
+}
+
+#gameboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 400px;
+    height: 400px;
+    column-gap: 2px;
+    row-gap: 2px;
+    background-color: grey;
+}
