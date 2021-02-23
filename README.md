@@ -1,5 +1,3 @@
-# Tic Tac Toe
-
-Hi ZW this is my tic tac toe game
+# Hi ZW
 
 LINK: https://jednghk.github.io/Tic-Tac-Toe/tictactoe.html
