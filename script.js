@@ -11,13 +11,6 @@ const gameBoard = (function() {
     const player1 = Player(1, 'X')
     const player2 = Player(2, 'O')
     let currentPlayer = player1
-    
-    const createPlayAgainBtn = () => {
-        const playAgainBtn = document.createElement('button')
-        playAgainBtn.setAttribute('onclick','gameBoard.playAgain()')
-        playAgainBtn.textContent = 'Play Again'
-        return playAgainBtn
-    }
 
     const createXSymbol = () => {
         const Xsymbol = document.createElement('img')
@@ -33,19 +26,6 @@ const gameBoard = (function() {
         return Osymbol
     }
 
-    const hasMarker = (array, index) => {
-        if (array[index] !== '') {
-            return true
-        }
-    }
-
-    const playAgain = () => {
-        //reset board, remove text and play again button, rerender board
-        gameBoardArr = createBlankBoard()
-        removeTextAndButton()
-        renderBoard()
-    }
-
     const createBlankBoard = () => {
         return {'1': '', '2': '', '3': '','4': '', '5': '', '6': '','7': '', '8': '', '9': ''}
     }
@@ -55,6 +35,29 @@ const gameBoard = (function() {
         let btn = document.querySelector('button')
         text.remove()
         btn.remove()
+    }
+
+    const createGrid = () => {
+        let grid = document.createElement('div')
+        grid.style.cssText = 'background-color:rgb(253, 249, 196); display: flex; align-text: center; justify-content: center;'
+        grid.setAttribute('onclick', 'gameBoard.main(this)')
+        return grid
+    }
+
+    const createNewBoard = () => {
+        const newGameBoard = document.createElement('div')
+        newGameBoard.setAttribute('id', 'gameboard')
+        return newGameBoard
+    }
+
+    const appendSymbol = (symbol, grid) => {
+        let Xsymbol = createXSymbol()
+        let Osymbol = createOSymbol()
+        if (symbol == 'O') {
+            grid.appendChild(Osymbol)
+        }else if (symbol == 'X') {
+            grid.appendChild(Xsymbol)
+        }
     }
 
     const placeMarker = (grid) => {
@@ -68,23 +71,30 @@ const gameBoard = (function() {
         }
 
         gameBoardArr[gridIndex] = currentPlayer.marker 
-        renderBoard()
+    }
 
-        //declares winner
-        if (checkWin(gameBoardArr) || isFullArr(gameBoardArr)) {
-            const winOrDraw = document.createElement('p')
-            winOrDraw.style.cssText = 'margin-top: 30px; font-size: 30px'
-            if (checkWin(gameBoardArr)) {
-                winOrDraw.textContent = `The Winner is '${checkWin(gameBoardArr)}'!`
-            } else {
-                winOrDraw.textContent = `It's a draw!`
-            }
-            body.appendChild(winOrDraw)
-            body.appendChild(createPlayAgainBtn())
+    const hasMarker = (array, index) => {
+        if (array[index] !== '') {
+            return true
+        }
+    }
+
+    const renderBoard = () => {
+        const gameBoard = document.querySelector('#gameboard')
+        gameBoard.remove()
+        
+        newGameBoard = createNewBoard()
+
+        for (const [key, symbol] of Object.entries(gameBoardArr)) {
+            //create individual grid
+            let grid = createGrid()
+            grid.dataset.index = key
+            //need to add conditional to put either X or O
+            appendSymbol(symbol, grid)
+            newGameBoard.appendChild(grid)
         }
 
-        //take note this changes a global variable
-        switchPlayers()
+        body.appendChild(newGameBoard)
     }
 
     const checkWin = (board) => {
@@ -164,57 +174,6 @@ const gameBoard = (function() {
         return false
     }
 
-    
-
-    const switchPlayers = () => {
-        if (currentPlayer == player1) {
-            currentPlayer = player2
-        }else{
-            currentPlayer = player1
-        }
-    }
-
-    const createGrid = () => {
-        let grid = document.createElement('div')
-        grid.style.cssText = 'background-color:rgb(253, 249, 196); display: flex; align-text: center; justify-content: center;'
-        grid.setAttribute('onclick', 'gameBoard.placeMarker(this)')
-        return grid
-    }
-
-    const createNewBoard = () => {
-        const newGameBoard = document.createElement('div')
-        newGameBoard.setAttribute('id', 'gameboard')
-        return newGameBoard
-    }
-
-    const appendSymbol = (symbol, grid) => {
-        let Xsymbol = createXSymbol()
-        let Osymbol = createOSymbol()
-        if (symbol == 'O') {
-            grid.appendChild(Osymbol)
-        }else if (symbol == 'X') {
-            grid.appendChild(Xsymbol)
-        }
-    }
-
-    const renderBoard = () => {
-        const gameBoard = document.querySelector('#gameboard')
-        gameBoard.remove()
-        
-        newGameBoard = createNewBoard()
-
-        for (const [key, symbol] of Object.entries(gameBoardArr)) {
-            //create individual grid
-            let grid = createGrid()
-            grid.dataset.index = key
-            //need to add conditional to put either X or O
-            appendSymbol(symbol, grid)
-            newGameBoard.appendChild(grid)
-        }
-
-        body.appendChild(newGameBoard)
-    }
-    
     const isFullArr = (arr) => {
         for (const [key, symbol] of Object.entries(arr)) {
             if (!symbol) {
@@ -224,14 +183,54 @@ const gameBoard = (function() {
         return true
     }
 
-    return {placeMarker, renderBoard, checkWin, playAgain}
+    const declareWinOrDraw = () => {
+        const winOrDraw = document.createElement('p')
+        winOrDraw.style.cssText = 'margin-top: 30px; font-size: 30px'
+        if (checkWin(gameBoardArr)) {
+            winOrDraw.textContent = `The Winner is '${checkWin(gameBoardArr)}'!`
+        } else {
+            winOrDraw.textContent = `It's a draw!`
+        }
+        body.appendChild(winOrDraw)
+        body.appendChild(createPlayAgainBtn())
+    }
+
+    const createPlayAgainBtn = () => {
+        const playAgainBtn = document.createElement('button')
+        playAgainBtn.setAttribute('onclick','gameBoard.playAgain()')
+        playAgainBtn.textContent = 'Play Again'
+        return playAgainBtn
+    }
+        
+    const playAgain = () => {
+        //reset board, remove text and play again button, rerender board
+        gameBoardArr = createBlankBoard()
+        removeTextAndButton()
+        renderBoard()
+    }   
+
+    const switchPlayers = () => {
+        if (currentPlayer == player1) {
+            currentPlayer = player2
+        }else{
+            currentPlayer = player1
+        }
+    }
+
+    const main = (grid) => {
+        placeMarker(grid)
+
+        renderBoard()
+
+        if (checkWin(gameBoardArr) || isFullArr(gameBoardArr)) {
+            declareWinOrDraw()
+        }
+
+        switchPlayers()
+    }
+
+    return {renderBoard, main, playAgain}
 })();
 
-const gameController = () => {
-    //while no win, initialize the board, repeat loop
-    //to constantly update the array, check for win and render the board
-    gameBoard.renderBoard()
-
-}
-
-gameController()
+//initialise board
+gameBoard.renderBoard()
