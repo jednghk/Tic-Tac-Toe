@@ -1,6 +1,12 @@
 # Tic Tac Toe
+[Live Preview](https://jednghk.github.io/Tic-Tac-Toe/tictactoe.html)
 
-This project is self-explanatory, its a browser tic tac toe game
+[Link to official project description](https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript/lessons/tic-tac-toe)
+
+## Reflections
+Hi guys!
+
+The project is a simple tic tac toe game where two players will take turns putting their markers, and the first to match three in a row wins.
 
 My primary focus for this project was learning to create programs entirely from javascript rather than relying on HTML. Another focus was incorporating factory functions and the revealing module pattern in my code for further organisation and reducing global variables.
 
