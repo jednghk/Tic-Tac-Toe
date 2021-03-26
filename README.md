@@ -2,7 +2,7 @@
 
 This project is self-explanatory, its a browser tic tac toe game
 
-My primary focus for this project was to implement factory functions and the revealing module pattern in my code.
+My primary focus for this project was learning to create programs entirely from javascript rather than relying on HTML. Another focus was incorporating factory functions and the revealing module pattern in my code for further organisation and reducing global variables.
 
 Prior to this project, all my variables had been defined in a global scope which eventually led to me having
 to rephrase variable names so they didn't clash. However I still felt I don't have a grasp on how the revealing
